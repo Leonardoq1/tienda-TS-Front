@@ -1,8 +1,0 @@
-Las pruebas se realizo en postman,  el edit, create y delete  funcionanban bien y  reflejaba 
-los cambios del lado del frond(en el menu que realice), pero a la hora de consumir la api de "create" desde el frond,
-no me dejaba, segun la logica de "create" me deberia funcionar, pero no. 
-
-Asi que me achicopale y ya no avance con el delete y edit, no se pudo mathar.  :(
-
-
-Mañana pedire de tu asesoria. :D

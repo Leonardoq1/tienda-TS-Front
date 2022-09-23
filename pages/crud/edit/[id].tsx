@@ -1,28 +1,76 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { SyntheticEvent, useEffect, useState } from "react"
+import { useToastify } from "../../../hooks/useToastify";
 import { Product } from "../../../types/product.type";
 
 export default function Edit() {
-    const [product, setProduct] = useState()
-    console.log(product)
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
     const [stock, setStock] = useState(0);
-    const [expireOn, setExpireOn] = useState(Date);
+    const [expireOn, setExpireOn] = useState ('');
     const [activo, setActivo] = useState('');
 
-
     const route = useRouter();
+
+    const  {id}  = route.query
+    
+    const {notifyEdit} = useToastify()
+
+    useEffect(()=>{
+        
+        const getProduct = async (id) => {
+            const data = await fetch(`http://localhost:8000/ProductView/${id}`)
+            const product:Product = await data.json()
+            setName(product.name)
+            setImage(product.image)
+            setDescription(product.description)
+            setPrice(product.price)
+            setStock(product.stock)
+            setExpireOn(product.expireOn)
+            setActivo(product.activo)
+            console.log(product)
+         }
+         getProduct(id) 
+       
+    },[])
+
+    const submit = async (e:SyntheticEvent) => {
+    e.preventDefault()
+
+        let postDate = {
+            name: name,
+            image: image,
+            description: description,
+            price: price,
+            stock: stock,
+            expireOn: expireOn,
+            activo: activo
+        };
+
+        await fetch('http://localhost:8000/ProductView/'+route.query.id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(postDate)
+        });
+        
+        await route.push('/crud')
+        notifyEdit()
+    }
+   
+   
+
 
 
     return (
         <>
-            <h2 className="text-center font-serif text-3xl font-bold mt-5 mb-5">Edit</h2>
+            <h2 className="text-center font-serif text-3xl font-bold mt-5 mb-5">Edi {id}</h2>
             <div className="bg-slate-700 shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
-                <form >
+                <form onSubmit={submit}>
 
                     <div className="-mx-3 md:flex mb-6">
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
@@ -33,6 +81,7 @@ export default function Edit() {
                                 className="appearance-none block w-full bg-white text-black border border-red rounded py-3 px-4 mb-3"
                                 type="text"
                                 placeholder="Product"
+                                value={name}
                                 onChange={e => setName(e.target.value)}
                                 required
                             />
@@ -44,6 +93,7 @@ export default function Edit() {
                             <input
                                 className="appearance-none block w-full bg-white text-black border border-grey-lighter rounded py-3 px-4"
                                 type={"text"}
+                                value={image}
                                 onChange={e => setImage(e.target.value)}
                             />
                         </div>
@@ -55,6 +105,7 @@ export default function Edit() {
                             </label>
                             <textarea
                                 className="appearance-none block w-full bg-white text-black border border-grey-lighter rounded py-3 px-4 mb-3"
+                                value={description}
                                 onChange={e => setDescription(e.target.value)}
                                 required
                             />
@@ -69,9 +120,10 @@ export default function Edit() {
                                 className="appearance-none block w-full bg-white text-black border border-grey-lighter rounded py-3 px-4"
                                 type={"number"}
                                 placeholder="$"
+                                value={price}
                                 onChange={e => setPrice(parseInt(e.target.value))}
                                 required
-                            />console
+                            />
                         </div>
                         <div className="md:w-1/2 px-3 mb-6 md:mb-0">
                             <label className="block uppercase tracking-wide text-white text-xs font-bold mb-2" htmlFor="grid-city">
@@ -81,6 +133,7 @@ export default function Edit() {
                                 className="appearance-none block w-full bg-white text-black border border-grey-lighter rounded py-3 px-4"
                                 type={"number"}
                                 placeholder="0"
+                                value={stock}
                                 onChange={e => setStock(parseInt(e.target.value))}
                                 required
                             />
@@ -92,6 +145,7 @@ export default function Edit() {
                             <input
                                 className="appearance-none block w-full bg-white text-black border border-grey-lighter rounded py-3 px-4"
                                 type={"date"}
+                                value={expireOn}
                                 onChange={e => setExpireOn(e.target.value)}
                                 required
                             />
@@ -103,6 +157,7 @@ export default function Edit() {
                             <input
                                 className="appearance-none block w-full bg-white text-black border border-grey-lighter rounded py-3 px-4"
                                 type={"text"}
+                                value={activo}
                                 onChange={e => setActivo(e.target.value)}
                                 required
                             />
@@ -118,3 +173,4 @@ export default function Edit() {
         </>
     )
 }
+

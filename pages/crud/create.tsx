@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { SyntheticEvent, useState } from "react"
+import { useToastify } from "../../hooks/useToastify";
 
 export default function Create() {
     const [name, setName] = useState('');
@@ -13,6 +14,7 @@ export default function Create() {
 
 
     const route = useRouter();
+    const {notifyAdd} = useToastify()
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -35,9 +37,8 @@ export default function Create() {
             body: JSON.stringify(postDate)
         });
         let result = await response.json();
-        console.log(result);
         await route.push('/crud')
-
+        notifyAdd()
     }
     return (
         <>
@@ -134,10 +135,12 @@ export default function Create() {
                     </div>
                     <div className="flex justify-center mt-6">
                         <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded" type="submit">Agregar</button>
+                        
                     </div>
                 </form>
             </div>
 
         </>
     )
+    
 }

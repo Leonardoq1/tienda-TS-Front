@@ -2,7 +2,7 @@ export const TestProduct = ({ products, currentPage, previousPage, nextPage }) =
     return (
         <>
 
-            <h1 className="text-center text-black text-lg font-bold ">Pagina {currentPage + 1}</h1>
+            <h1 id="c1" className="text-center text-black text-lg font-bold ">Pagina {currentPage + 1}</h1>
             <div className="grid grid-cols-2 gap-2  place-content-center ">
                 <button className="rounded-md bg-gray-200 px-4 py-2  transition duration-300 hover:bg-lime-300" onClick={previousPage}> <strong>Previous</strong> </button>
                 <button className="rounded-md bg-gray-200 px-4 py-2  transition duration-300 hover:bg-lime-300" onClick={nextPage}> <strong>Next</strong> </button>

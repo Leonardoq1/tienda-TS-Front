@@ -3,7 +3,7 @@ export type Product = {
     name: string;
     image: string;
     price: number;
-    expireOn: Date;
+    expireOn: string;
     description: string;
     stock: number;
     activo: string;
